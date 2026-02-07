@@ -1,6 +1,6 @@
 {
   "name": "ghost-typer",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Shortcut for Every words",
   "main": "main.js",
   "scripts": {

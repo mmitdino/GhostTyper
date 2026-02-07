@@ -131,9 +131,14 @@ uIOhook.on("keydown", (e) => {
 function checkShortcuts() {
   const textInfo = inputBuffer.join("");
   const shortcuts = store.get("shortcuts");
+  const settings = store.get("settings");
 
   for (const s of shortcuts) {
-    if (textInfo.endsWith(s.trigger)) {
+    const isMatch = settings.caseSensitive
+      ? textInfo.endsWith(s.trigger)
+      : textInfo.toLowerCase().endsWith(s.trigger.toLowerCase());
+
+    if (isMatch) {
       performExpansion(s);
       break;
     }
@@ -169,9 +174,15 @@ function performExpansion(shortcut) {
   // 5. Notify renderer about stats update
   if (mainWindow && mainWindow.webContents) {
     mainWindow.webContents.send("stats-updated", newStats);
+    
+    // 6. Play sound if enabled
+    const settings = store.get("settings");
+    if (settings && settings.playSound) {
+      mainWindow.webContents.send("play-sound");
+    }
   }
 
-  // 6. Send keys
+  // 7. Send keys
   sendKeys(cmdString);
 }
 
@@ -226,6 +237,20 @@ function createTrayIcon() {
 
 app.whenReady().then(async () => {
   await initStore();
+
+  // Sync "Start with Windows" setting on startup
+  const settings = store.get("settings");
+  if (settings) {
+    const options = {
+      openAtLogin: settings.startWithWindows,
+      path: app.getPath("exe"),
+    };
+    if (!app.isPackaged) {
+      options.args = [path.resolve(app.getAppPath())];
+    }
+    app.setLoginItemSettings(options);
+  }
+
   createWindow();
 
   tray = new Tray(createTrayIcon());
@@ -349,10 +374,17 @@ ipcMain.handle("update-settings", (event, newSettings) => {
   store.set("settings", newSettings);
 
   // Apply "Start with Windows"
-  app.setLoginItemSettings({
+  const options = {
     openAtLogin: newSettings.startWithWindows,
     path: app.getPath("exe"),
-  });
+  };
+
+  // If in development, we need to pass the app path as an argument
+  if (!app.isPackaged) {
+    options.args = [path.resolve(app.getAppPath())];
+  }
+
+  app.setLoginItemSettings(options);
 
   return newSettings;
 });

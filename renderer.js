@@ -136,10 +136,10 @@ function setupSettings() {
 
     // Toggle Listeners
     const toggles = {
-        'startWithWindows': 'startWithWindowsToggle',
-        'startMinimized': 'startMinimizedToggle',
-        'playSound': 'playSoundToggle',
-        'caseSensitive': 'caseSensitiveToggle'
+        'startWithWindows': 'startWithWindows',
+        'startMinimized': 'startMinimized',
+        'playSound': 'playSound',
+        'caseSensitive': 'caseSensitive'
     };
 
     Object.keys(toggles).forEach(key => {
@@ -156,10 +156,10 @@ function setupSettings() {
 
 function applySettingsToUI() {
     const toggles = {
-        'startWithWindows': 'startWithWindowsToggle',
-        'startMinimized': 'startMinimizedToggle',
-        'playSound': 'playSoundToggle',
-        'caseSensitive': 'caseSensitiveToggle'
+        'startWithWindows': 'startWithWindows',
+        'startMinimized': 'startMinimized',
+        'playSound': 'playSound',
+        'caseSensitive': 'caseSensitive'
     };
 
     Object.keys(toggles).forEach(key => {
@@ -303,6 +303,45 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+// Play premium expansion sound
+function playExpansionSound() {
+    if (!settings.playSound) return;
+    
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Create multiple oscillators for a richer, more "premium" sound
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        // High-pitched chime component
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(1200, audioCtx.currentTime);
+        osc1.frequency.exponentialRampToValueAtTime(1800, audioCtx.currentTime + 0.1);
+
+        // Softer body component
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc2.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.15);
+
+        // Volume (increased as requested)
+        gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+
+        osc1.connect(gainNode);
+        osc2.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc1.start();
+        osc2.start();
+        osc1.stop(audioCtx.currentTime + 0.2);
+        osc2.stop(audioCtx.currentTime + 0.2);
+    } catch (e) {
+        console.error('Error playing sound:', e);
+    }
+}
+
 // Search functionality
 function filterShortcuts(query) {
     if (!query) {
@@ -370,6 +409,10 @@ window.ghostAPI.onShortcutsUpdated((updatedShortcuts) => {
 window.ghostAPI.onStatsUpdated((updatedStats) => {
     stats = updatedStats;
     updateStats();
+});
+
+window.ghostAPI.onPlaySound(() => {
+    playExpansionSound();
 });
 
 // Keyboard shortcuts
