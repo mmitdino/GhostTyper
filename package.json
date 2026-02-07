@@ -1,0 +1,51 @@
+{
+  "name": "ghost-typer",
+  "version": "1.0.0",
+  "description": "Shortcut for Every words",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "build": "electron-builder",
+    "postinstall": "electron-rebuild"
+  },
+  "author": "Janma Hasarel",
+  "license": "MIT",
+  "build": {
+    "appId": "com.janma.ghosttyper",
+    "productName": "GhostTyper",
+    "directories": {
+      "output": "dist_setup"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "hazasite",
+        "repo": "GhostTyper"
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^40.1.0",
+    "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9"
+  },
+  "dependencies": {
+    "@jitsi/robotjs": "^0.6.1",
+    "electron-store": "^11.0.2",
+    "electron-updater": "^6.7.3",
+    "uiohook-napi": "^1.5.4"
+  }
+}
