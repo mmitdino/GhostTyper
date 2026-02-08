@@ -26,6 +26,9 @@ const statTimeSavedEl = document.getElementById('statTimeSaved');
 const sections = {
     shortcuts: document.getElementById('shortcutsSection'),
     stats: document.getElementById('statsSection'),
+    defaults: document.getElementById('defaultsSection'),
+    communication: document.getElementById('communicationSection'),
+    appShortcuts: document.getElementById('appShortcutsSection'),
     settings: document.getElementById('settingsSection')
 };
 

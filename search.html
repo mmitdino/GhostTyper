@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghost Search</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --accent-purple: #8b5cf6;
+            --accent-purple-dim: rgba(139, 92, 246, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: transparent;
+            margin: 0;
+            padding: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(139, 92, 246, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            -webkit-app-region: drag;
+        }
+
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            -webkit-app-region: no-drag;
+        }
+
+        .search-icon {
+            color: var(--text-secondary);
+            margin-right: 15px;
+            display: flex;
+        }
+
+        input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .results-list {
+            max-height: 400px;
+            overflow-y: auto;
+            -webkit-app-region: no-drag;
+        }
+
+        .result-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .result-item:hover, .result-item.selected {
+            background: var(--accent-purple-dim);
+            border-left-color: var(--accent-purple);
+        }
+
+        .result-trigger {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--accent-purple);
+            font-size: 1rem;
+        }
+
+        .result-expansion {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-left: 20px;
+            max-width: 300px;
+        }
+
+        .empty-state {
+            padding: 40px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <div class="search-input-wrapper">
+            <div class="search-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+            </div>
+            <input type="text" id="searchInput" placeholder="Search shortcuts..." autofocus>
+        </div>
+        <div class="results-list" id="resultsList"></div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const resultsList = document.getElementById('resultsList');
+        let shortcuts = [];
+        let filteredShortcuts = [];
+        let selectedIndex = 0;
+
+        async function init() {
+            shortcuts = await window.ghostAPI.getShortcuts();
+            // Add defaults
+            const defaults = [
+                { trigger: ';date', expansion: 'Today\'s Date' },
+                { trigger: ';time', expansion: 'Current Time' },
+                { trigger: ';now', expansion: 'Today is {date} and time is {time}' }
+            ];
+            // Add communication shortcuts
+            const communication = [
+                { trigger: ';do', expansion: 'How are you doing?' },
+                { trigger: ';gm', expansion: 'Good Morning!' },
+                { trigger: ';gn', expansion: 'Good Night!' },
+                { trigger: ';tnx', expansion: 'Thank you very much!' },
+                { trigger: ';br', expansion: 'Best Regards,' },
+                { trigger: ';asap', expansion: 'As soon as possible' },
+                { trigger: ';omg', expansion: 'Oh My GOD!' }
+            ];
+            shortcuts = [...defaults, ...communication, ...shortcuts];
+            renderResults('');
+        }
+
+        function renderResults(query) {
+            filteredShortcuts = shortcuts.filter(s => 
+                s.trigger.toLowerCase().includes(query.toLowerCase()) || 
+                s.expansion.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (filteredShortcuts.length === 0) {
+                resultsList.innerHTML = '<div class="empty-state">No shortcuts found</div>';
+                return;
+            }
+
+            resultsList.innerHTML = filteredShortcuts.map((s, idx) => `
+                <div class="result-item ${idx === selectedIndex ? 'selected' : ''}" onclick="selectShortcut(${idx})">
+                    <span class="result-trigger">${s.trigger}</span>
+                    <span class="result-expansion">${s.expansion}</span>
+                </div>
+            `).join('');
+
+            // Scroll selected into view
+            const selected = resultsList.querySelector('.selected');
+            if (selected) selected.scrollIntoView({ block: 'nearest' });
+        }
+
+        function selectShortcut(index) {
+            const shortcut = filteredShortcuts[index];
+            if (shortcut) {
+                window.ghostAPI.pasteShortcut(shortcut);
+            }
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            selectedIndex = 0;
+            renderResults(e.target.value);
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedIndex = (selectedIndex + 1) % filteredShortcuts.length;
+                renderResults(searchInput.value);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedIndex = (selectedIndex - 1 + filteredShortcuts.length) % filteredShortcuts.length;
+                renderResults(searchInput.value);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                selectShortcut(selectedIndex);
+            } else if (e.key === 'Escape') {
+                window.ghostAPI.closeSearch();
+            }
+        });
+
+        // Focus input on show
+        window.addEventListener('focus', () => {
+            searchInput.focus();
+        });
+
+        init();
+    </script>
+</body>
+</html>

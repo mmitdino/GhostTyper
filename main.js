@@ -6,7 +6,10 @@ const {
   ipcMain,
   nativeImage,
   dialog,
+  globalShortcut,
+  clipboard,
 } = require("electron");
+const robot = require("@jitsi/robotjs");
 const { autoUpdater } = require("electron-updater");
 const path = require("path");
 const { uIOhook, UiohookKey } = require("uiohook-napi");
@@ -34,8 +37,9 @@ async function initStore() {
 }
 
 let mainWindow;
-let tray;
+let searchWindow;
 
+let tray;
 // --- PowerShell Input Simulation ---
 function sendKeys(keys) {
   try {
@@ -106,6 +110,29 @@ const keyMap = {
 };
 // Note: This map handles unshifted keys. For a simple ";mail" detector, likely fine.
 
+// --- Helper for Dynamic Variables ---
+function getFormattedDate() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+
+
+
+
+function getFormattedTime() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+  return `${hours}:${minutes}:${seconds}`;
+}
+
+
+
 // --- Buffer & Detection ---
 let inputBuffer = [];
 const MAX_BUFFER = 50;
@@ -128,10 +155,70 @@ uIOhook.on("keydown", (e) => {
   }
 });
 
+
+
+
+
 function checkShortcuts() {
   const textInfo = inputBuffer.join("");
   const shortcuts = store.get("shortcuts");
   const settings = store.get("settings");
+
+  // Check for dynamic built-in variables first
+  const lowerText = textInfo.toLowerCase();
+  
+  if (lowerText.endsWith(";date")) {
+    performExpansion({ trigger: ";date", expansion: getFormattedDate() });
+    return;
+  }
+  if (lowerText.endsWith(";time")) {
+    performExpansion({ trigger: ";time", expansion: getFormattedTime() });
+    return;
+  }
+  if (lowerText.endsWith(";now")) {
+    performExpansion({ trigger: ";now", expansion: `Today is ${getFormattedDate()} and time is ${getFormattedTime()}` });
+    return;
+  }
+
+  // Communication shortcuts
+  if (lowerText.endsWith(";do")) {
+    performExpansion({ trigger: ";do", expansion: "How are you doing?" });
+    return;
+  }
+  if (lowerText.endsWith(";gm")) {
+    performExpansion({ trigger: ";gm", expansion: "Good Morning!" });
+    return;
+  }
+  if (lowerText.endsWith(";gn")) {
+    performExpansion({ trigger: ";gn", expansion: "Good Night!" });
+    return;
+  }
+  if (lowerText.endsWith(";tnx")) {
+    performExpansion({ trigger: ";tnx", expansion: "Thank you very much!" });
+    return;
+  }
+  if (lowerText.endsWith(";br")) {
+    performExpansion({ trigger: ";br", expansion: "Best Regards," });
+    return;
+  }
+  if (lowerText.endsWith(";asap")) {
+    performExpansion({ trigger: ";asap", expansion: "As soon as possible" });
+    return;
+  }
+  if (lowerText.endsWith(";omg")) {
+    performExpansion({ trigger: ";omg", expansion: "Oh My GOD!" });
+    return;
+  }
+
+
+
+
+
+
+
+
+
+
 
   for (const s of shortcuts) {
     const isMatch = settings.caseSensitive
@@ -157,7 +244,11 @@ function performExpansion(shortcut) {
   }
 
   // 3. Add expansion text
-  cmdString += escapeForSendKeys(shortcut.expansion);
+  let expansion = shortcut.expansion;
+  // Replace placeholders if any
+  expansion = expansion.replace(/{date}/g, getFormattedDate());
+  expansion = expansion.replace(/{time}/g, getFormattedTime());
+
 
   // 4. Update stats
   const currentStats = store.get("stats");
@@ -183,6 +274,7 @@ function performExpansion(shortcut) {
   }
 
   // 7. Send keys
+  cmdString += escapeForSendKeys(expansion);
   sendKeys(cmdString);
 }
 
@@ -221,6 +313,33 @@ function createWindow() {
       mainWindow.hide();
     }
     return false;
+  });
+}
+
+function createSearchWindow() {
+  if (searchWindow) {
+    searchWindow.show();
+    return;
+  }
+
+  searchWindow = new BrowserWindow({
+    width: 600,
+    height: 500,
+    frame: false,
+    transparent: true,
+    show: false,
+    alwaysOnTop: true,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+  });
+
+  searchWindow.loadFile("search.html");
+
+  searchWindow.on("blur", () => {
+    searchWindow.hide();
   });
 }
 
@@ -276,6 +395,14 @@ app.whenReady().then(async () => {
 
   // Start Hook
   uIOhook.start();
+
+  // Register Global Shortcut for Spotlight Search
+  globalShortcut.register("Control+Space", () => {
+    if (!searchWindow) {
+      createSearchWindow();
+    }
+    searchWindow.show();
+  });
 
   // Auto Update Setup
   autoUpdater.autoDownload = true;
@@ -387,4 +514,18 @@ ipcMain.handle("update-settings", (event, newSettings) => {
   app.setLoginItemSettings(options);
 
   return newSettings;
+});
+
+ipcMain.handle("close-search", () => {
+  if (searchWindow) searchWindow.hide();
+});
+
+ipcMain.handle("paste-shortcut", (event, shortcut) => {
+  if (searchWindow) searchWindow.hide();
+  
+  // Give focus back to the previous app
+  // Using a small delay to ensure focus has shifted
+  setTimeout(() => {
+    performExpansion(shortcut);
+  }, 100);
 });

@@ -10,5 +10,7 @@ contextBridge.exposeInMainWorld('ghostAPI', {
     updateSettings: (settings) => ipcRenderer.invoke('update-settings', settings),
     onShortcutsUpdated: (callback) => ipcRenderer.on('shortcuts-updated', (event, shortcuts) => callback(shortcuts)),
     onStatsUpdated: (callback) => ipcRenderer.on('stats-updated', (event, stats) => callback(stats)),
-    onPlaySound: (callback) => ipcRenderer.on('play-sound', (event) => callback())
+    onPlaySound: (callback) => ipcRenderer.on('play-sound', (event) => callback()),
+    pasteShortcut: (shortcut) => ipcRenderer.invoke('paste-shortcut', shortcut),
+    closeSearch: () => ipcRenderer.invoke('close-search')
 });

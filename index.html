@@ -1,368 +1,773 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;"
+    />
     <title>Ghost Typer</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="logo">
-                <div class="logo-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                    </svg>
-                </div>
-                <span class="logo-text">Ghost Typer</span>
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">
+          <div class="logo-icon">
+            <img src="assets/icon.ico" alt="Ghost Typer">
+          </div>
+          <span class="logo-text">Ghost Typer</span>
+        </div>
+
+        <nav class="nav-menu">
+          <a href="#" class="nav-item active" data-section="shortcuts">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+            </svg>
+            <span>Shortcuts</span>
+          </a>
+          <a href="#" class="nav-item" data-section="stats">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M18 20V10M12 20V4M6 20v-6" />
+            </svg>
+            <span>Statistics</span>
+          </a>
+          <a href="#" class="nav-item" data-section="defaults">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"
+              />
+            </svg>
+            <span>Defaults</span>
+          </a>
+
+          <a href="#" class="nav-item" data-section="communication">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            <span>Communication</span>
+          </a>
+
+          <a href="#" class="nav-item" data-section="appShortcuts">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path
+                d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M6 16h12"
+              />
+            </svg>
+            <span>App Shortcuts</span>
+          </a>
+          <a href="#" class="nav-item" data-section="settings">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+              />
+            </svg>
+            <span>Settings</span>
+          </a>
+        </nav>
+
+        <div class="status-card">
+          <div class="status-dot"></div>
+          <div class="status-info">
+            <span class="status-label">Status</span>
+            <span class="status-text">Active & Listening</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Shortcuts Section -->
+        <section id="shortcutsSection" class="section active">
+          <header class="header">
+            <div class="header-left">
+              <h1>Your Shortcuts</h1>
+              <p class="subtitle">Create text expansions to type faster</p>
+            </div>
+            <div class="header-right">
+              <div class="search-box">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Search shortcuts..."
+                />
+              </div>
+              <button class="btn-add" id="openAddModal">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+                Add New
+              </button>
+            </div>
+          </header>
+
+          <!-- Mini Stats -->
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-icon purple">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="totalShortcuts">0</span>
+                <span class="stat-label">Shortcuts</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon blue">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="totalExpansions">0</span>
+                <span class="stat-label">Expansions</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"
+                  />
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="charsSaved">0</span>
+                <span class="stat-label">Chars Saved</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shortcuts Grid -->
+          <div class="shortcuts-grid" id="shortcutList"></div>
+
+          <!-- Empty State -->
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+            </div>
+            <h3>No shortcuts yet</h3>
+            <p>Create your first shortcut to start typing faster!</p>
+            <button class="btn-primary" id="emptyAddBtn">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Create Shortcut
+            </button>
+          </div>
+        </section>
+
+        <!-- Defaults Section -->
+        <section id="defaultsSection" class="section">
+          <header class="header">
+            <div class="header-left">
+              <h1>Default Shortcuts</h1>
+              <p class="subtitle">Built-in dynamic text expansions</p>
+            </div>
+          </header>
+
+          <div class="shortcuts-grid">
+            <!-- Date -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">;date</span>
+                <span class="badge">Built-in</span>
+              </div>
+              <div class="shortcut-expansion">
+                Expands to current date (e.g., 2026-02-08)
+              </div>
+            </div>
+
+            <!-- Time -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">;time</span>
+                <span class="badge">Built-in</span>
+              </div>
+              <div class="shortcut-expansion">
+                Expands to current time (e.g., 10:46:20)
+              </div>
+            </div>
+
+            <!-- Now -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">;now</span>
+                <span class="badge">Built-in</span>
+              </div>
+              <div class="shortcut-expansion">
+                Today is {date} and time is {time}
+              </div>
             </div>
             
-            <nav class="nav-menu">
-                <a href="#" class="nav-item active" data-section="shortcuts">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                    </svg>
-                    <span>Shortcuts</span>
-                </a>
-                <a href="#" class="nav-item" data-section="stats">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 20V10M12 20V4M6 20v-6"/>
-                    </svg>
-                    <span>Statistics</span>
-                </a>
-                <a href="#" class="nav-item" data-section="settings">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                    </svg>
-                    <span>Settings</span>
-                </a>
-            </nav>
 
-            <div class="status-card">
-                <div class="status-dot"></div>
-                <div class="status-info">
-                    <span class="status-label">Status</span>
-                    <span class="status-text">Active & Listening</span>
-                </div>
+
+
+
+            
+          </div>
+
+          <div class="stats-info-card mt-24">
+            <h3>💡 Pro Tip: Placeholders</h3>
+            <p>
+              You can use <strong>{date}</strong> and <strong>{time}</strong>
+              inside any of your custom shortcuts too! They will be
+              automatically replaced with current values.
+            </p>
+          </div>
+        </section>
+
+        <!-- Communication Section -->
+        <section id="communicationSection" class="section">
+          <header class="header">
+            <div class="header-left">
+              <h1>Communication</h1>
+              <p class="subtitle">Built-in shortcuts for email and chat</p>
             </div>
-        </aside>
+          </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Shortcuts Section -->
-            <section id="shortcutsSection" class="section active">
-                <header class="header">
-                    <div class="header-left">
-                        <h1>Your Shortcuts</h1>
-                        <p class="subtitle">Create text expansions to type faster</p>
-                    </div>
-                    <div class="header-right">
-                        <div class="search-box">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="11" cy="11" r="8"/>
-                                <path d="m21 21-4.35-4.35"/>
-                            </svg>
-                            <input type="text" id="searchInput" placeholder="Search shortcuts...">
-                        </div>
-                        <button class="btn-add" id="openAddModal">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 5v14M5 12h14"/>
-                            </svg>
-                            Add New
-                        </button>
-                    </div>
-                </header>
+          <div class="shortcuts-grid">
+            <!-- ;do -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">;do</span>
+                <span class="badge">Built-in</span>
+              </div>
+              <div class="shortcut-expansion">
+                How are you doing?
+              </div>
+            </div>
 
-                <!-- Mini Stats -->
-                <div class="stats-row">
-                    <div class="stat-card">
-                        <div class="stat-icon purple">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <span class="stat-value" id="totalShortcuts">0</span>
-                            <span class="stat-label">Shortcuts</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon blue">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                <polyline points="22 4 12 14.01 9 11.01"/>
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <span class="stat-value" id="totalExpansions">0</span>
-                            <span class="stat-label">Expansions</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon green">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/>
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <span class="stat-value" id="charsSaved">0</span>
-                            <span class="stat-label">Chars Saved</span>
-                        </div>
-                    </div>
+            <!-- ;gm -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">;gm</span>
+                <span class="badge">Built-in</span>
+              </div>
+              <div class="shortcut-expansion">
+                Good Morning!
+              </div>
+            </div>
+
+            <!-- ;gn -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">;gn</span>
+                <span class="badge">Built-in</span>
+              </div>
+              <div class="shortcut-expansion">
+                Good Night!
+              </div>
+            </div>
+
+            <!-- ;tnx -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">;tnx</span>
+                <span class="badge">Built-in</span>
+              </div>
+              <div class="shortcut-expansion">
+                Thank you very much!
+              </div>
+            </div>
+
+            <!-- ;br -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">;br</span>
+                <span class="badge">Built-in</span>
+              </div>
+              <div class="shortcut-expansion">
+                Best Regards,
+              </div>
+            </div>
+
+            <!-- ;asap -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">;asap</span>
+                <span class="badge">Built-in</span>
+              </div>
+              <div class="shortcut-expansion">
+                As soon as possible
+              </div>
+            </div>
+
+            <!-- ;omg -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">;omg</span>
+                <span class="badge">Built-in</span>
+              </div>
+              <div class="shortcut-expansion">
+                Oh My GOD!
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-info-card mt-24">
+            <h3>💬 Communication Made Easy</h3>
+            <p>
+              These shortcuts help you quickly type common phrases in emails and chats. They work everywhere!
+            </p>
+          </div>
+        </section>
+
+        <!-- App Shortcuts Section -->
+        <section id="appShortcutsSection" class="section">
+          <header class="header">
+            <div class="header-left">
+              <h1>App Shortcuts</h1>
+              <p class="subtitle">Global hotkeys to control Ghost Typer</p>
+            </div>
+          </header>
+
+          <div class="shortcuts-grid">
+            <!-- Spotlight Search -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">Ctrl + Space</span>
+                <span class="badge">Global</span>
+              </div>
+              <div class="shortcut-expansion">
+                Opens the <strong>Spotlight Search</strong>. Quickly search through all your shortcuts and paste them instantly into any application.
+              </div>
+            </div>
+
+            <!-- New Shortcut -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">Ctrl + N</span>
+                <span class="badge">App Only</span>
+              </div>
+              <div class="shortcut-expansion">
+                Quickly open the <strong>Add New Shortcut</strong> modal when the main window is focused.
+              </div>
+            </div>
+
+            <!-- Close Modal -->
+            <div class="shortcut-card">
+              <div class="shortcut-header">
+                <span class="shortcut-trigger">Esc</span>
+                <span class="badge">App Only</span>
+              </div>
+              <div class="shortcut-expansion">
+                Closes the current modal or the spotlight search window.
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-info-card mt-24">
+            <h3>💡 Productivity Tip</h3>
+            <p>
+              Use <strong>Ctrl + Space</strong> to find shortcuts you rarely use or can't remember the trigger for. It's the fastest way to stay productive!
+            </p>
+          </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section id="statsSection" class="section">
+          <header class="header">
+            <div class="header-left">
+              <h1>Statistics</h1>
+              <p class="subtitle">Track your productivity gains</p>
+            </div>
+          </header>
+
+          <div class="stats-grid">
+            <div class="big-stat-card">
+              <div class="big-stat-icon purple">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+              </div>
+              <div class="big-stat-content">
+                <span class="big-stat-value" id="statTotalShortcuts">0</span>
+                <span class="big-stat-label">Total Shortcuts</span>
+                <p class="big-stat-desc">Active text expansions</p>
+              </div>
+            </div>
+
+            <div class="big-stat-card">
+              <div class="big-stat-icon blue">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              <div class="big-stat-content">
+                <span class="big-stat-value" id="statTotalExpansions">0</span>
+                <span class="big-stat-label">Total Expansions</span>
+                <p class="big-stat-desc">Times shortcuts were used</p>
+              </div>
+            </div>
+
+            <div class="big-stat-card">
+              <div class="big-stat-icon green">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"
+                  />
+                </svg>
+              </div>
+              <div class="big-stat-content">
+                <span class="big-stat-value" id="statCharsSaved">0</span>
+                <span class="big-stat-label">Characters Saved</span>
+                <p class="big-stat-desc">Keystrokes you didn't have to type</p>
+              </div>
+            </div>
+
+            <div class="big-stat-card">
+              <div class="big-stat-icon orange">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </div>
+              <div class="big-stat-content">
+                <span class="big-stat-value" id="statTimeSaved">0s</span>
+                <span class="big-stat-label">Time Saved</span>
+                <p class="big-stat-desc">Estimated typing time saved</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-info-card">
+            <h3>📊 How it's calculated</h3>
+            <ul>
+              <li>
+                <strong>Characters Saved</strong> = Expansion length - Trigger
+                length
+              </li>
+              <li>
+                <strong>Time Saved</strong> = Characters saved × 0.2 seconds per
+                character
+              </li>
+            </ul>
+          </div>
+        </section>
+
+
+
+        <!-- Settings Section -->
+        <section id="settingsSection" class="section">
+          <header class="header">
+            <div class="header-left">
+              <h1>Settings</h1>
+              <p class="subtitle">Customize your Ghost Typer experience</p>
+            </div>
+          </header>
+
+          <div class="settings-list">
+            <div class="settings-group">
+              <h3>General</h3>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-name">Start with Windows</span>
+                  <span class="setting-desc"
+                    >Launch Ghost Typer when you start your computer</span
+                  >
                 </div>
+                <label class="toggle">
+                  <input
+                    type="checkbox"
+                    id="startWithWindows"
+                    aria-label="Start with Windows"
+                  />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
 
-                <!-- Shortcuts Grid -->
-                <div class="shortcuts-grid" id="shortcutList"></div>
-
-                <!-- Empty State -->
-                <div class="empty-state" id="emptyState">
-                    <div class="empty-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                        </svg>
-                    </div>
-                    <h3>No shortcuts yet</h3>
-                    <p>Create your first shortcut to start typing faster!</p>
-                    <button class="btn-primary" id="emptyAddBtn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 5v14M5 12h14"/>
-                        </svg>
-                        Create Shortcut
-                    </button>
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-name">Start Minimized</span>
+                  <span class="setting-desc"
+                    >Start in system tray instead of showing window</span
+                  >
                 </div>
-            </section>
+                <label class="toggle">
+                  <input
+                    type="checkbox"
+                    id="startMinimized"
+                    aria-label="Start Minimized"
+                  />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
 
-            <!-- Statistics Section -->
-            <section id="statsSection" class="section">
-                <header class="header">
-                    <div class="header-left">
-                        <h1>Statistics</h1>
-                        <p class="subtitle">Track your productivity gains</p>
-                    </div>
-                </header>
-
-                <div class="stats-grid">
-                    <div class="big-stat-card">
-                        <div class="big-stat-icon purple">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                            </svg>
-                        </div>
-                        <div class="big-stat-content">
-                            <span class="big-stat-value" id="statTotalShortcuts">0</span>
-                            <span class="big-stat-label">Total Shortcuts</span>
-                            <p class="big-stat-desc">Active text expansions</p>
-                        </div>
-                    </div>
-
-                    <div class="big-stat-card">
-                        <div class="big-stat-icon blue">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                <polyline points="22 4 12 14.01 9 11.01"/>
-                            </svg>
-                        </div>
-                        <div class="big-stat-content">
-                            <span class="big-stat-value" id="statTotalExpansions">0</span>
-                            <span class="big-stat-label">Total Expansions</span>
-                            <p class="big-stat-desc">Times shortcuts were used</p>
-                        </div>
-                    </div>
-
-                    <div class="big-stat-card">
-                        <div class="big-stat-icon green">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/>
-                            </svg>
-                        </div>
-                        <div class="big-stat-content">
-                            <span class="big-stat-value" id="statCharsSaved">0</span>
-                            <span class="big-stat-label">Characters Saved</span>
-                            <p class="big-stat-desc">Keystrokes you didn't have to type</p>
-                        </div>
-                    </div>
-
-                    <div class="big-stat-card">
-                        <div class="big-stat-icon orange">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <polyline points="12 6 12 12 16 14"/>
-                            </svg>
-                        </div>
-                        <div class="big-stat-content">
-                            <span class="big-stat-value" id="statTimeSaved">0s</span>
-                            <span class="big-stat-label">Time Saved</span>
-                            <p class="big-stat-desc">Estimated typing time saved</p>
-                        </div>
-                    </div>
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-name">Play Sound on Expansion</span>
+                  <span class="setting-desc"
+                    >Play a subtle sound when a shortcut is expanded</span
+                  >
                 </div>
+                <label class="toggle">
+                  <input
+                    type="checkbox"
+                    id="playSound"
+                    aria-label="Play Sound on Expansion"
+                  />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
 
-                <div class="stats-info-card">
-                    <h3>📊 How it's calculated</h3>
-                    <ul>
-                        <li><strong>Characters Saved</strong> = Expansion length - Trigger length</li>
-                        <li><strong>Time Saved</strong> = Characters saved × 0.2 seconds per character</li>
-                    </ul>
+            </div>
+
+            <div class="settings-group">
+              <h3>Shortcuts</h3>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-name">Trigger Character</span>
+                  <span class="setting-desc"
+                    >Character that starts a shortcut</span
+                  >
                 </div>
-            </section>
+                <input
+                  type="text"
+                  class="setting-input"
+                  id="triggerChar"
+                  value=";"
+                  maxlength="1"
+                  disabled
+                  aria-label="Trigger Character"
+                />
+              </div>
 
-            <!-- Settings Section -->
-            <section id="settingsSection" class="section">
-                <header class="header">
-                    <div class="header-left">
-                        <h1>Settings</h1>
-                        <p class="subtitle">Customize your Ghost Typer experience</p>
-                    </div>
-                </header>
-
-                <div class="settings-list">
-                    <div class="settings-group">
-                        <h3>General</h3>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <span class="setting-name">Start with Windows</span>
-                                <span class="setting-desc">Launch Ghost Typer when you start your computer</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="startWithWindows" aria-label="Start with Windows">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <span class="setting-name">Start Minimized</span>
-                                <span class="setting-desc">Start in system tray instead of showing window</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="startMinimized" aria-label="Start Minimized">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <span class="setting-name">Play Sound on Expansion</span>
-                                <span class="setting-desc">Play a subtle sound when a shortcut is expanded</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="playSound" aria-label="Play Sound on Expansion">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="settings-group">
-                        <h3>Shortcuts</h3>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <span class="setting-name">Trigger Character</span>
-                                <span class="setting-desc">Character that starts a shortcut</span>
-                            </div>
-                            <input type="text" class="setting-input" id="triggerChar" value=";" maxlength="1" disabled aria-label="Trigger Character">
-                        </div>
-
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <span class="setting-name">Case Sensitive</span>
-                                <span class="setting-desc">Match shortcuts with exact case</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="caseSensitive" aria-label="Case Sensitive">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="settings-group">
-                        <h3>Data</h3>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <span class="setting-name">Export Shortcuts</span>
-                                <span class="setting-desc">Download your shortcuts as a JSON file</span>
-                            </div>
-                            <button class="btn-secondary" id="exportBtn">Export</button>
-                        </div>
-
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <span class="setting-name">Import Shortcuts</span>
-                                <span class="setting-desc">Import shortcuts from a JSON file</span>
-                            </div>
-                            <button class="btn-secondary" id="importBtn">Import</button>
-                        </div>
-
-                        <div class="setting-item danger">
-                            <div class="setting-info">
-                                <span class="setting-name">Reset All Data</span>
-                                <span class="setting-desc">Delete all shortcuts and reset statistics</span>
-                            </div>
-                            <button class="btn-danger" id="resetBtn">Reset</button>
-                        </div>
-                    </div>
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-name">Case Sensitive</span>
+                  <span class="setting-desc"
+                    >Match shortcuts with exact case</span
+                  >
                 </div>
+                <label class="toggle">
+                  <input
+                    type="checkbox"
+                    id="caseSensitive"
+                    aria-label="Case Sensitive"
+                  />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
 
-                <div class="about-card">
-                    <h3>About Ghost Typer</h3>
-                    <p>Version 1.0.0</p>
-                    <p class="about-desc">A powerful text expansion tool that helps you type faster by replacing short triggers with longer text snippets.</p>
+            <div class="settings-group">
+              <h3>Data</h3>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-name">Export Shortcuts</span>
+                  <span class="setting-desc"
+                    >Download your shortcuts as a JSON file</span
+                  >
                 </div>
-            </section>
-        </main>
+                <button class="btn-secondary" id="exportBtn">Export</button>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-name">Import Shortcuts</span>
+                  <span class="setting-desc"
+                    >Import shortcuts from a JSON file</span
+                  >
+                </div>
+                <button class="btn-secondary" id="importBtn">Import</button>
+              </div>
+
+              <div class="setting-item danger">
+                <div class="setting-info">
+                  <span class="setting-name">Reset All Data</span>
+                  <span class="setting-desc"
+                    >Delete all shortcuts and reset statistics</span
+                  >
+                </div>
+                <button class="btn-danger" id="resetBtn">Reset</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-card">
+            <h3>About Ghost Typer</h3>
+            <p>Version 1.1.0</p>
+            <p class="about-desc">
+              A powerful text expansion tool that helps you type faster by
+              replacing short triggers with longer text snippets.
+            </p>
+          </div>
+        </section>
+      </main>
     </div>
 
     <!-- Add/Edit Modal -->
     <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 id="modalTitle">Add New Shortcut</h2>
-                <button class="modal-close" id="closeModal" title="Close">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6 6 18M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            <form id="shortcutForm">
-                <div class="form-group">
-                    <label for="trigger">Trigger</label>
-                    <div class="input-wrapper">
-                        <span class="input-prefix">;</span>
-                        <input type="text" id="trigger" placeholder="mail" required>
-                    </div>
-                    <span class="input-hint">Type <strong>;mail</strong> to trigger expansion</span>
-                </div>
-                <div class="form-group">
-                    <label for="expansion">Expansion Text</label>
-                    <textarea id="expansion" placeholder="example@gmail.com" rows="4" required></textarea>
-                    <span class="input-hint">This text will replace your trigger</span>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
-                    <button type="submit" class="btn-primary" id="submitBtn">Add Shortcut</button>
-                </div>
-            </form>
+      <div class="modal">
+        <div class="modal-header">
+          <h2 id="modalTitle">Add New Shortcut</h2>
+          <button class="modal-close" id="closeModal" title="Close">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
         </div>
+        <form id="shortcutForm">
+          <div class="form-group">
+            <label for="trigger">Trigger</label>
+            <div class="input-wrapper">
+              <span class="input-prefix">;</span>
+              <input type="text" id="trigger" placeholder="mail" required />
+            </div>
+            <span class="input-hint"
+              >Type <strong>;mail</strong> to trigger expansion</span
+            >
+          </div>
+          <div class="form-group">
+            <label for="expansion">Expansion Text</label>
+            <textarea
+              id="expansion"
+              placeholder="example@gmail.com"
+              rows="4"
+              required
+            ></textarea>
+            <span class="input-hint">This text will replace your trigger</span>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" id="cancelBtn">
+              Cancel
+            </button>
+            <button type="submit" class="btn-primary" id="submitBtn">
+              Add Shortcut
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- Toast Notification -->
     <div class="toast" id="toast">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-            <polyline points="22 4 12 14.01 9 11.01"/>
-        </svg>
-        <span id="toastMessage">Shortcut added successfully!</span>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+        <polyline points="22 4 12 14.01 9 11.01" />
+      </svg>
+      <span id="toastMessage">Shortcut added successfully!</span>
     </div>
 
     <script src="renderer.js"></script>
-</body>
+  </body>
 </html>
