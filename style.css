@@ -482,9 +482,21 @@ body {
   border-radius: var(--radius-xl);
   width: 100%;
   max-width: 480px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-lg);
-  animation: modalIn 0.2s ease;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(139, 92, 246, 0.1);
+  animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-purple);
 }
 
 @keyframes modalIn {
@@ -506,37 +518,42 @@ body {
 }
 
 .modal-header h2 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .modal-close {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border: none;
   background: var(--bg-tertiary);
-  border-radius: var(--radius-sm);
+  border-radius: 50%;
   color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: var(--transition);
+  border: 1px solid var(--border-color);
 }
 
 .modal-close:hover {
-  color: var(--text-primary);
-  background: var(--border-color);
+  color: var(--accent-red);
+  background: var(--accent-red-dim);
+  border-color: var(--accent-red);
+  transform: rotate(90deg);
 }
 
 .modal-close svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .modal-body {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 .form-group {
@@ -570,20 +587,32 @@ body {
 }
 
 .form-group textarea {
-  min-height: 120px;
-  resize: vertical;
+  min-height: 140px;
+  resize: none;
+  line-height: 1.6;
 }
 
-.modal-footer {
-  margin-top: 1.5rem;
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 0 4px var(--accent-purple-dim);
+}
+
+.form-actions {
+  margin-top: 2rem;
   display: flex;
+  justify-content: flex-end;
   gap: 1rem;
+}
+
+.form-actions button {
+  min-width: 120px;
 }
 
 .btn {
   flex: 1;
-  padding: 0.75rem;
-  border-radius: var(--radius-md);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
@@ -595,19 +624,88 @@ body {
   background: var(--gradient-purple);
   color: white;
   box-shadow: var(--shadow-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
+  box-shadow: 0 0 60px rgba(139, 92, 246, 0.4);
   filter: brightness(1.1);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Modal Inputs and Wrappers */
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0 1rem;
+  transition: var(--transition);
+}
+
+.input-wrapper:focus-within {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 0 4px var(--accent-purple-dim);
+  background: var(--bg-secondary);
+  transform: translateY(-1px);
+}
+
+.input-prefix {
+  color: var(--accent-purple);
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+  font-size: 1.1rem;
+  -webkit-user-select: none;
+  user-select: none;
+  margin-right: 0.25rem;
+}
+
+.input-wrapper input {
+  flex: 1;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.75rem 0 !important;
+}
+
+.input-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.input-hint strong {
+  color: var(--text-secondary);
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
 }
 
 .btn-secondary {
   background: var(--bg-tertiary);
   color: var(--text-primary);
   border: 1px solid var(--border-color);
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--radius-md);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
@@ -622,8 +720,8 @@ body {
   background: var(--accent-red-dim);
   color: var(--accent-red);
   border: 1px solid var(--accent-red-dim);
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--radius-md);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
@@ -634,7 +732,6 @@ body {
   color: white;
   transform: translateY(-1px);
 }
-
 
 /* Toast */
 .toast-container {
@@ -687,7 +784,6 @@ body {
   -ms-overflow-style: none; /* For IE and Edge */
 }
 
-
 /* Sections */
 .section {
   display: none;
@@ -702,16 +798,19 @@ body {
   display: flex;
 }
 
-#shortcutsSection, #defaultsSection, #communicationSection, #appShortcutsSection, #statsSection, #settingsSection, #aboutSection {
+#shortcutsSection,
+#defaultsSection,
+#communicationSection,
+#appShortcutsSection,
+#statsSection,
+#settingsSection,
+#aboutSection {
   overflow-y: auto; /* These sections can scroll themselves if needed */
   padding: 0 1.5rem 2rem 0;
 }
 
-
-
-
 #aiAssistantSection {
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 /* Statistics Page */
@@ -866,7 +965,6 @@ body {
   border-color: var(--accent-red);
 }
 
-
 .setting-info {
   display: flex;
   flex-direction: column;
@@ -962,7 +1060,6 @@ input:checked + .toggle-slider:before {
   cursor: not-allowed;
   background: rgba(255, 255, 255, 0.03);
 }
-
 
 .api-config-card {
   background: var(--bg-tertiary);
@@ -1174,7 +1271,6 @@ input:checked + .toggle-slider:before {
   display: none;
 }
 
-
 .chat-messages::-webkit-scrollbar-thumb {
   background: var(--border-color);
   border-radius: 3px;
@@ -1347,29 +1443,27 @@ input:checked + .toggle-slider:before {
   animation: fadeIn 0.5s ease;
 }
 
-
 @media (max-width: 768px) {
   .about-full-card {
     padding: 1.5rem;
     margin: 0.5rem;
   }
-  
+
   .about-header {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
   }
-  
+
   .about-logo {
     width: 70px;
     height: 70px;
   }
-  
+
   .about-title h2 {
     font-size: 1.75rem;
   }
 }
-
 
 .about-header {
   display: flex;
@@ -1424,7 +1518,6 @@ input:checked + .toggle-slider:before {
   flex-direction: column;
   gap: 2.5rem;
 }
-
 
 .about-info-group h3 {
   font-size: 1.25rem;
@@ -1565,9 +1658,6 @@ input:checked + .toggle-slider:before {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4);
 }
-
-
-
 
 .about-footer {
   text-align: center;
